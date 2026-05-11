@@ -1,0 +1,96 @@
+const SELECT_OPTIONS = {
+          </div>
+        </div>
+
+        <div className="content">
+          {SECTIONS.map((section) => (
+            <React.Fragment key={section.title}>
+              <div className="section-title">{section.title}</div>
+              <div className="grid">
+                {section.fields.map((field) => (
+                  <div className="field" key={field}>
+                    <label htmlFor={field}>{LABELS[field] || field}</label>
+                    <select
+                      id={field}
+                      value={form[field]}
+                      onChange={(e) => setForm((prev) => ({ ...prev, [field]: e.target.value }))}
+                    >
+                      {(SELECT_OPTIONS[field] || []).map((option) => (
+                        <option key={option || "none"} value={option}>
+                          {option || "None"}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
+              </div>
+            </React.Fragment>
+          ))}
+
+          <MultiSelectBox
+            title="Choose Up To 6 Accessories"
+            options={ACCESSORY_OPTIONS}
+            selected={accessories}
+            onToggle={(value) => toggleLimitedSelection(value, accessories, setAccessories)}
+            note="You can select up to 6 accessories."
+          />
+
+          <MultiSelectBox
+            title="Choose Up To 6 Props"
+            options={PROP_OPTIONS}
+            selected={props}
+            onToggle={(value) => toggleLimitedSelection(value, props, setProps)}
+            note="You can select up to 6 props."
+          />
+
+          <MultiSelectBox
+            title="Choose Up To 6 Extra Character Details"
+            options={DETAIL_OPTIONS}
+            selected={details}
+            onToggle={(value) => toggleLimitedSelection(value, details, setDetails)}
+            note="You can select up to 6 extra details."
+          />
+
+          <div className="section-title">Extra Prompt Notes</div>
+          <div className="grid">
+            <div className="field wide">
+              <label htmlFor="extraNotes">Type Anything Extra</label>
+              <textarea
+                id="extraNotes"
+                placeholder="Add any extra prompt details here..."
+                value={extraNotes}
+                onChange={(e) => setExtraNotes(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="actions">
+            <button className="btn-soft" onClick={addToFavorites}>Save to Favorites</button>
+            <button className="btn-soft" onClick={handleRandomize}>Randomize</button>
+            <button className="btn-main" onClick={handleGenerate}>Generate Prompt</button>
+            <button className="btn-soft" onClick={handleCopy}>Copy Prompt</button>
+            <button className="btn-soft" onClick={handleClear}>Clear All</button>
+          </div>
+
+          {copyMessage ? <div className="status">{copyMessage}</div> : null}
+
+          <div className="output">{output}</div>
+
+          <div className="section-title">Favorites (Up to 6)</div>
+          <div className="multi-box">
+            {favorites.length === 0 && <div className="note">No saved prompts yet.</div>}
+            {favorites.map((fav, i) => (
+              <div key={i} style={{marginBottom: "10px", fontSize: "0.85rem"}}>
+                {fav}
+              </div>
+            ))}
+          </div>
+          <div className="actions">
+            <button className="btn-soft" onClick={clearFavorites}>Reset Favorites</button>
+          </div>
+          <div className="footer-note">© Lisa Porter — Ultimate Doll Generator</div>
+        </div>
+      </div>
+    </div>
+  );
+}
